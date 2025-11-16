@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday — For My Love 🌹</title>
+<style>
+  :root{
+    --bg:#fff0f6;
+    --accent:#ff4d9e;
+    --accent-dark:#c02b6b;
+    --card:#fff7fb;
+    --glass: rgba(255,255,255,0.6);
+    --shadow: 0 10px 30px rgba(192,43,107,0.15);
+    --text:#3b103b;
+    --muted:#6b4a6b;
+  }
+  html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, system-ui, -apple-system; background: radial-gradient( circle at 10% 10%, #fff6fb 0%, var(--bg) 30%, #ffeef4 100% ); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    box-sizing:border-box;
+  }
+  .card{
+    width:100%;
+    max-width:980px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.8), var(--card));
+    border-radius:18px;
+    padding:28px;
+    box-shadow:var(--shadow);
+    border: 1px solid rgba(255,77,158,0.06);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* header */
+  .top{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .avatar{
+    width:84px;height:84px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:28px;box-shadow:0 8px 20px rgba(192,43,107,0.18);
+  }
+  h1{margin:0;font-size:28px}
+  p.lead{margin:6px 0 0;color:var(--muted)}
+
+  /* buttons */
+  .actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  button.big{
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:white;padding:12px 18px;border-radius:12px;border:0;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(192,43,107,0.18);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  button.big:hover{transform:translateY(-3px);box-shadow:0 18px 30px rgba(192,43,107,0.26)}
+  button.ghost{
+    background:transparent;border:2px solid rgba(192,43,107,0.12);padding:10px 16px;border-radius:12px;color:var(--accent-dark);cursor:pointer;font-weight:600;
+    transition:all .14s ease;
+  }
+  button.ghost:hover{background:rgba(255,77,158,0.04);transform:translateY(-3px)}
+
+  /* main area */
+  .main{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:18px;
+    margin-top:22px;
+  }
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    border-radius:14px;padding:18px;border:1px solid rgba(192,43,107,0.05);
+    min-height:220px;box-shadow:inset 0 -6px 30px rgba(255,77,158,0.02);
+  }
+  .preview{
+    border-radius:12px;padding:14px;background:linear-gradient(180deg,#fff,#fff6fb);height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  }
+  .preview h2{margin:0 0 6px;font-size:20px}
+  .preview p{margin:0 0 12px;color:var(--muted)}
+
+  /* floating hearts container */
+  .hearts {
+    pointer-events:none;
+    position:absolute;inset:0;
+  }
+
+  /* SVG hearts (robust and simple) */
+  .svg-heart {
+    position:absolute;
+    pointer-events:none;
+    will-change: transform, opacity;
+    animation-name: floatUpFade;
+    animation-timing-function: cubic-bezier(.2,.9,.2,1);
+    /* duration will be set inline */
+  }
+  @keyframes floatUpFade {
+    0% { transform: translateY(0) scale(0.92) rotate(0deg); opacity:1; }
+    20% { transform: translateY(-30px) scale(1.05) rotate(-6deg); }
+    50% { transform: translateY(-180px) scale(1.03) rotate(6deg); opacity:0.9; }
+    100% { transform: translateY(-480px) scale(1.12) rotate(18deg); opacity:0; }
+  }
+
+  /* modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(8,5,8,0.36);display:none;align-items:center;justify-content:center;z-index:40}
+  .modal{width:100%;max-width:720px;background:white;border-radius:12px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,0.35);transform:translateY(20px);opacity:0;transition:all .18s ease}
+  .modal.show{transform:none;opacity:1}
+  .modal h3{margin:0 0 8px}
+  .modal .row{display:flex;gap:12px}
+  .input, textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);box-shadow:inset 0 2px 6px rgba(0,0,0,0.02);font-size:14px}
+  textarea{min-height:120px;resize:vertical}
+  .close-x{position:absolute;right:16px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer;color:var(--muted)}
+
+  /* small footer/credits */
+  .foot{margin-top:14px;color:var(--muted);font-size:13px}
+
+  /* decorative sparkles */
+  .sparkle{
+    position:absolute;
+    width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(45deg,#fff7ff,#ffd2ec);
+    filter:drop-shadow(0 6px 14px rgba(255,77,158,0.12));
+    opacity:.95;
+    transform:scale(0);
+    animation:twinkle 1.3s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%{transform:scale(.2);opacity:0}
+    50%{transform:scale(1.1);opacity:1}
+    100%{transform:scale(.2);opacity:0}
+  }
+
+  /* responsive */
+  @media (max-width:880px){
+    .main{grid-template-columns:1fr}
+    .avatar{width:64px;height:64px;font-size:22px}
+    .top{gap:12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" role="main" aria-label="Birthday web gift">
+    <div class="hearts" id="hearts"></div>
+    <!-- decorative sparkles -->
+    <div class="sparkle" style="left:10%;top:8%;animation-delay:.1s"></div>
+    <div class="sparkle" style="left:86%;top:12%;animation-delay:.5s"></div>
+    <div class="sparkle" style="left:72%;top:76%;animation-delay:.8s"></div>
+
+    <div class="top">
+      <div class="avatar" id="avatar">K</div>
+      <div>
+        <h1>Happy Birthday, my love 🌹</h1>
+        <p class="lead">A little website I made just for you — open the surprises ❤️</p>
+        <div class="foot">Tip: Click the heart button to create a floating heart shower ✨</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="big" id="msgBtn">🎁 Birthday Message</button>
+      <button class="big" id="cardBtn">💌 Birthday Card</button>
+      <button class="big" id="songBtn">🎶 Play Birthday Song</button>
+      <button class="ghost" id="heartGenBtn">✨ Bubble Love Heart Generator</button>
+      <button class="ghost" id="surpriseBtn">🌟 Surprise Confetti</button>
+    </div>
+
+    <div class="main">
+      <div class="panel">
+        <div class="preview" id="preview">
+          <h2 id="previewTitle">A Gift From the Heart</h2>
+          <p id="previewText">❤️❤️❤️Hai shaam tu, taareef main
+Tu chain hai, taqleef main
+Tujhse mila to paa liya
+Har cheez main
+Hai khwab tu taabeer main
+Maana tujhe taqdeer mein
+Tera hua is bheed main, is bheed main
+
+Hai teri meherbani
+Ke andheron se hum muqar gaye
+Hai teri meherbani
+Ke bin jaane hi yun sanwar gaye❤️❤️❤️</p>
+          <div style="margin-top:12px">
+            <button class="big" id="quickHeart">Send a quick heart ❤️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Controls & Info</h3>
+        <p style="color:var(--muted)">You can edit the message in the message modal, generate/download the card as an image, play/pause the song, and produce animated hearts.</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ghost" id="toggleHearts">Toggle Continuous Hearts</button>
+          <button class="ghost" id="stopSong">Stop Song</button>
+        </div>
+        <div style="margin-top:12px">
+          <label style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px">Personalize avatar initial</label>
+          <input id="initialInput" class="input" placeholder="Type initial (e.g. A)"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">Made with love — open and enjoy. 🎈</div>
+  </div>
+</div>
+
+<!-- Modal backdrop -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" id="modal">
+    <button class="close-x" id="modalClose">&times;</button>
+    <h3 id="modalTitle">Modal</h3>
+    <div id="modalBody"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+      <button class="ghost" id="modalCancel">Cancel</button>
+      <button class="big" id="modalOK">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden canvas used to create/download card image -->
+<canvas id="cardCanvas" width="1200" height="800" style="display:none"></canvas>
+
+<script>
+/* -----------------------
+  Utilities & DOM refs
+   ----------------------- */
+const heartsContainer = document.getElementById('hearts');
+const previewTitle = document.getElementById('previewTitle');
+const previewText = document.getElementById('previewText');
+const avatar = document.getElementById('avatar');
+const initialInput = document.getElementById('initialInput');
+
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalOK = document.getElementById('modalOK');
+const modalCancel = document.getElementById('modalCancel');
+const modalClose = document.getElementById('modalClose');
+
+const quickHeartBtn = document.getElementById('quickHeart');
+const msgBtn = document.getElementById('msgBtn');
+const cardBtn = document.getElementById('cardBtn');
+const songBtn = document.getElementById('songBtn');
+const heartGenBtn = document.getElementById('heartGenBtn');
+const surpriseBtn = document.getElementById('surpriseBtn');
+const toggleHeartsBtn = document.getElementById('toggleHearts');
+const stopSongBtn = document.getElementById('stopSong');
+
+let continuousHearts = false;
+let continuousInterval = null;
+
+/* -----------------------
+  Modal helpers
+   ----------------------- */
+function openModal(title, bodyNode, okText='OK', opts={}){
+  modalTitle.textContent = title;
+  modalBody.innerHTML = '';
+  modalBody.appendChild(bodyNode);
+  modalOK.textContent = okText;
+  modalBackdrop.style.display = 'flex';
+  setTimeout(()=> modal.classList.add('show'), 10);
+  modalBackdrop.setAttribute('aria-hidden','false');
+  modalOK.focus();
+  return new Promise((resolve) => {
+    function close(result){
+      modal.classList.remove('show');
+      setTimeout(()=>{ modalBackdrop.style.display='none'; modalBackdrop.setAttribute('aria-hidden','true') },180);
+      modalOK.removeEventListener('click',okHandler);
+      modalCancel.removeEventListener('click',cancelHandler);
+      modalClose.removeEventListener('click',cancelHandler);
+      resolve(result);
+    }
+    function okHandler(){ close(true); }
+    function cancelHandler(){ close(false); }
+    modalOK.addEventListener('click', okHandler);
+    modalCancel.addEventListener('click', cancelHandler);
+    modalClose.addEventListener('click', cancelHandler);
+    // also click backdrop to close (if clicked outside modal)
+    modalBackdrop.addEventListener('click', function backdropClick(e){
+      if(e.target === modalBackdrop){ backdropClick && backdropClick(); cancelHandler(); }
+    }, {once:true});
+  });
+}
+
+/* -----------------------
+  Robust SVG heart generator
+   ----------------------- */
+/*
+  createSVGHeart:
+    - xPercent: 0..100 (horizontal placement as percent of container width)
+    - startYPercent: percent from top where heart starts (e.g. 75)
+    - color: fill color string
+    - size: px width/height (approx)
+    - duration: ms duration of float animation
+*/
+function createSVGHeart(xPercent=50, startYPercent=85, color=null, size=36, duration=4200) {
+  const containerRect = heartsContainer.getBoundingClientRect();
+  // compute pixel positions based on container size
+  const leftPx = (containerRect.width * (xPercent/100)) - size/2;
+  const topPx = (containerRect.height * (startYPercent/100));
+
+  // SVG heart path (centered at 0,0); we will size the svg via viewBox and width/height
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', '-50 -50 100 100'); // heart fits nicely
+  svg.setAttribute('class', 'svg-heart');
+  svg.style.left = `${leftPx}px`;
+  svg.style.top = `${topPx}px`;
+  svg.style.zIndex = 100 + Math.floor(Math.random()*50);
+  svg.style.animationDuration = (duration/1000) + 's';
+
+  // random rotate for variety
+  const initialRotate = (Math.random()*40 - 20);
+  svg.style.transform = `rotate(${initialRotate}deg)`;
+
+  // make the heart shape
+  const path = document.createElementNS(svgNS, 'path');
+  // heart path: simple symmetric bezier curve
+  path.setAttribute('d', `
+    M 0 -20
+    C 20 -50, 70 -10, 0 40
+    C -70 -10, -20 -50, 0 -20 Z
+  `);
+  const fillColor = color || `linear-gradient(0deg, #ff88b8, #ff4d9e)`; // fallback, use solid if gradient not possible
+  // browsers don't accept CSS gradients in SVG 'fill' easily; use solid colors chosen randomly
+  const solidColors = ['#ff4d9e','#ff7ab0','#ffb0d6','#ff9ac6','#ffd1e8'];
+  path.setAttribute('fill', color || solidColors[Math.floor(Math.random()*solidColors.length)]);
+  path.setAttribute('opacity', '0.98');
+
+  svg.appendChild(path);
+  heartsContainer.appendChild(svg);
+
+  // remove when animation ends (ensure cleanup)
+  const removeAfter = duration + 350;
+  setTimeout(()=> {
+    // fade out quickly if still present
+    if(svg && svg.parentNode) {
+      svg.style.transition = 'opacity 220ms linear';
+      svg.style.opacity = '0';
+      setTimeout(()=> svg.remove(), 250);
+    }
+  }, removeAfter);
+
+  return svg;
+}
+
+/* small helper that spawns a burst of hearts */
+function spawnHeartsBurst(n=12){
+  const rect = heartsContainer.getBoundingClientRect();
+  for(let i=0;i<n;i++){
+    const x = 8 + Math.random()*84; // percent
+    const size = 12 + Math.random()*46; // px
+    const dur = 2600 + Math.random()*4800; // ms
+    createSVGHeart(x, 78 + Math.random()*18, null, size, dur);
+  }
+}
+
+/* continuous hearts toggle */
+function startContinuousHearts(){
+  if(continuousInterval) clearInterval(continuousInterval);
+  continuousInterval = setInterval(()=> spawnHeartsBurst(5), 900);
+}
+function stopContinuousHearts(){
+  if(continuousInterval){ clearInterval(continuousInterval); continuousInterval=null; }
+}
+
+/* -----------------------
+  Preview & quick actions
+   ----------------------- */
+quickHeartBtn.addEventListener('click', ()=> {
+  spawnHeartsBurst(10);
+});
+
+/* avatar initial */
+initialInput.addEventListener('input', (e)=>{
+  const v = (e.target.value || '').trim().slice(0,1).toUpperCase() || 'U';
+  avatar.textContent = v;
+});
+
+/* toggle continuous hearts */
+toggleHeartsBtn.addEventListener('click', () => {
+  continuousHearts = !continuousHearts;
+  toggleHeartsBtn.textContent = continuousHearts ? 'Stop Continuous Hearts' : 'Toggle Continuous Hearts';
+  if(continuousHearts) startContinuousHearts(); else stopContinuousHearts();
+});
+
+/* Surprise confetti - simple heart burst + shimmer */
+surpriseBtn.addEventListener('click', ()=>{
+  spawnHeartsBurst(20);
+  // small sparkle animation by creating temporary elements
+  for(let i=0;i<14;i++){
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = (10 + Math.random()*80) + '%';
+    s.style.top = (20 + Math.random()*70) + '%';
+    s.style.animationDelay = (Math.random()*1.2) + 's';
+    heartsContainer.appendChild(s);
+    setTimeout(()=> s.remove(), 2500);
+  }
+});
+
+/* -----------------------
+  Message modal (editable)
+   ----------------------- */
+const defaultMessage = `My dearest love❤️,\n\nHappy Birthday bachcha🎈🎂! Every day with you is my favourite day. Thank you for being my loveliest, truest, purest life partner jaana😘. You are as sweet as Gulab jamun😋, Delicious like Ice Cream🍨 and Yummy like Idli Sambhar🍨. I love you more than words can say.\n\nLove always, ❤️\n\n#MeraSukoon❤️`;
+
+msgBtn.addEventListener('click', async ()=>{
+  const container = document.createElement('div');
+  const textarea = document.createElement('textarea');
+  textarea.className = 'input';
+  textarea.value = defaultMessage;
+  container.appendChild(textarea);
+
+  const ok = await openModal('Write a Birthday Message', container, 'Send');
+  if(ok){
+    const msg = textarea.value.trim();
+    previewTitle.textContent = 'A special message';
+    previewText.textContent = msg.split('\n')[0] || 'A heartfelt message...';
+    spawnHeartsBurst(16);
+    // show a celebratory modal with the full message
+    const show = document.createElement('div');
+    const p = document.createElement('pre');
+    p.style.whiteSpace = 'pre-wrap';
+    p.style.fontFamily = 'inherit';
+    p.style.padding = '8px';
+    p.style.background = 'linear-gradient(180deg,#fff,#fff6fb)';
+    p.style.borderRadius = '8px';
+    p.textContent = msg;
+    show.appendChild(p);
+    await openModal('Your Message', show, 'Close');
+  }
+});
+
+/* -----------------------
+  Card creation (canvas) and download
+   (unchanged from previous — kept for completeness)
+   ----------------------- */
+function drawCardOnCanvas(textLines, opts={}){
+  const canvas = document.getElementById('cardCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  // background
+  ctx.clearRect(0,0,W,H);
+  const g = ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#fff7fb'); g.addColorStop(1,'#ffeef4');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+  // big soft heart in bg
+  ctx.save();
+  ctx.globalAlpha = 0.06;
+  ctx.fillStyle = '#ff4d9e';
+  ctx.translate(W*0.78,H*0.22);
+  drawHeartPath(ctx, W*0.16);
+  ctx.restore();
+
+  // title
+  ctx.fillStyle = '#3b103b';
+  ctx.font = '56px Georgia, serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Happy Birthday', 80, 140);
+
+  // small subtitle
+  ctx.font = '28px system-ui, Arial';
+  ctx.fillStyle = '#7b536f';
+  ctx.fillText('With all my love ❤️', 80, 180);
+
+  // message box
+  const boxX = 80, boxY = 220, boxW = W - 160, lineHeight = 44;
+  ctx.fillStyle = 'rgba(255,255,255,0.95)';
+  roundRect(ctx, boxX-12, boxY-12, boxW+24, 360, 18);
+  ctx.fillStyle = '#fff'; ctx.fill();
+
+  // border decoration
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(255,77,158,0.08)';
+  roundRect(ctx, boxX-12, boxY-12, boxW+24, 360, 18);
+  ctx.stroke();
+
+  // draw message text
+  ctx.fillStyle = '#4b2a4b';
+  ctx.font = '22px system-ui, Arial';
+  ctx.textAlign = 'left';
+  let y = boxY + 36;
+  ctx.fillStyle = '#4b2a4b';
+  for(let i=0;i<textLines.length;i++){
+    wrapText(ctx, textLines[i], boxX+8, y, boxW-40, 26);
+    y += lineHeight * Math.ceil(ctx.measureText(textLines[i]).width / (boxW-40) || 1);
+    y += 8;
+  }
+
+  // small signer
+  ctx.font = '24px Georgia, serif';
+  ctx.fillStyle = '#9e4f84';
+  ctx.fillText('- Always yours', boxX, boxY + 320);
+
+  // small hearts bottom-right
+  ctx.save();
+  ctx.translate(W-160,H-110);
+  ctx.globalAlpha = 0.95;
+  for(let s=0;s<6;s++){
+    ctx.fillStyle = `rgba(255,${80 + s*20},${140 + s*6},${0.12 + s*0.06})`;
+    drawHeartPath(ctx, 36 - s*4);
+    ctx.translate(-18, 12);
+  }
+  ctx.restore();
+
+  return canvas.toDataURL('image/png');
+}
+
+function drawHeartPath(ctx, size){
+  // draws a heart at current transform origin
+  ctx.beginPath();
+  const s = size;
+  ctx.moveTo(0, -s/6);
+  ctx.bezierCurveTo(s/2, -s*0.9, s*1.4, s/4, 0, s);
+  ctx.bezierCurveTo(-s*1.4, s/4, -s/2, -s*0.9, 0, -s/6);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+/* simple text wrap helper */
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  for(let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    }
+    else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y);
+}
+
+/* Card modal & download */
+cardBtn.addEventListener('click', async ()=>{
+  const container = document.createElement('div');
+  container.innerHTML = `
+    <p style="color:#6b4a6b">Edit the message for the card below. Click "Generate Card" to preview and download.</p>
+  `;
+  const ta = document.createElement('textarea');
+  ta.value = `My Love❤️,\n\nWishing you the happiest birthday🎉🎉🎉. Every moment with you feels like a dream — here's to many more as i ant to spend my every moment with you❤️. I love you always.😘😘`;
+  ta.className = 'input';
+  container.appendChild(ta);
+  const ok = await openModal('Create Birthday Card', container, 'Generate Card');
+
+  if(ok){
+    const txt = ta.value.split('\n').filter(Boolean);
+    const dataURL = drawCardOnCanvas(txt);
+    // show preview modal with image and download
+    const show = document.createElement('div');
+    const img = document.createElement('img');
+    img.src = dataURL;
+    img.style.width = '100%';
+    img.style.borderRadius = '10px';
+    img.style.boxShadow = '0 10px 30px rgba(0,0,0,0.12)';
+    show.appendChild(img);
+
+    const downloadBtn = document.createElement('button');
+    downloadBtn.className = 'big';
+    downloadBtn.style.marginTop = '12px';
+    downloadBtn.textContent = 'Download Card as PNG';
+    downloadBtn.addEventListener('click', ()=>{
+      const a = document.createElement('a');
+      a.href = dataURL;
+      a.download = 'birthday-card.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+    show.appendChild(downloadBtn);
+    await openModal('Your Card — save & share', show, 'Close');
+  }
+});
+/* -----------------------------------
+   SIMPLE MP3 PLAYER (replacement)
+------------------------------------ */
+
+// Put your file in the same folder OR use an online link
+const birthdaySong = new Audio("Krutika.mp3"); 
+// Example: "audio/happy.mp3" or full URL 
+// Make sure CORS is allowed if using external link
+
+birthdaySong.preload = "auto";
+let isSongPlaying = false;
+
+songBtn.addEventListener("click", () => {
+    if (!isSongPlaying) {
+        birthdaySong.play();
+        isSongPlaying = true;
+        songBtn.textContent = "⏸️ Pause Song";
+    } else {
+        birthdaySong.pause();
+        isSongPlaying = false;
+        songBtn.textContent = "🎶 Play Birthday Song";
+    }
+});
+
+// OPTIONAL: Stop button if you keep one
+if (typeof stopSongBtn !== "undefined") {
+    stopSongBtn.addEventListener("click", () => {
+        birthdaySong.pause();
+        birthdaySong.currentTime = 0; // rewind
+        isSongPlaying = false;
+        songBtn.textContent = "🎶 Play Birthday Song";
+    });
+}
+
+
+/* Bubble heart generator */
+heartGenBtn.addEventListener('click', ()=> {
+  // create many small hearts that float up like bubbles
+  const count = 26;
+  for(let i=0;i<count;i++){
+    const x = 6 + Math.random()*88;
+    const size = 12 + Math.random()*36;
+    const dur = 3000 + Math.random()*4200;
+    createSVGHeart(x, 74 + Math.random()*8, null, size, dur);
+  }
+});
+
+/* -----------------------
+  Modal: Cancel on escape key
+   ----------------------- */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){
+    if(modalBackdrop.style.display === 'flex'){
+      modalClose.click();
+    } else {
+      stopSong();
+    }
+  }
+});
+
+/* -----------------------
+  Small onboarding: open a gentle greeting on first load
+   ----------------------- */
+window.addEventListener('load', async ()=>{
+  setTimeout(()=> {
+    spawnHeartsBurst(12);
+  }, 480);
+});
+
+/* Accessibility / neat finishing touches */
+msgBtn.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') msgBtn.click(); });
+cardBtn.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') cardBtn.click(); });
+
+</script>
+</body>
+</html>
